@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { addTodo, deleteTodo } from "../../store/slice/todoSlice"
+import { addTodo, deleteTodo,updateTodo } from "../../store/slice/todoSlice"
 
 function TodoList() {
   const [currentTodo, setCurrentTodo] = useState("")
@@ -11,6 +11,14 @@ function TodoList() {
   function handleTodo() {
     dispatch(addTodo(currentTodo))
     setCurrentTodo("")
+  }
+  function handleEditTodo(){
+    dispatch(updateTodo({
+      currentEditedTodoId,
+      currentTodo
+    }))
+    setCurrentTodo("")
+    setCurrentEditedTodoId("")
   }
 
   function handleDelete(getCurrentTodoId) {
@@ -31,8 +39,10 @@ function TodoList() {
         placeholder="enter your todo"
         type="text"
       />
-      <button disabled={currentTodo === ""} onClick={handleTodo}>
-        Add Todo
+      <button disabled={currentTodo === ""} onClick={currentEditedTodoId !== null ? handleEditTodo : handleTodo}>
+        {
+          currentEditedTodoId !== null ? "Edit Todo" : "Add Todo" 
+        }
       </button>
 
       <h1>To-do List</h1>
